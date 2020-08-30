@@ -1,0 +1,191 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Driver Application",
+    "description": "Driver Application"
+  },
+  "host": "localhost:8010",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Rides",
+      "description": "API for Rides management"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Get status API",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "Healthy"
+            }
+          }
+        }
+      }
+    },
+    "/rides": {
+      "post": {
+        "tags": [
+          "Rides"
+        ],
+        "description": "Create new ride in system",
+        "parameters": [
+          {
+            "name": "ride",
+            "in": "body",
+            "description": "Ride that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Ride"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New ride is created",
+            "schema": {
+              "$ref": "#/definitions/Ride"
+            }
+          },
+          "400": {
+            "description": "VALIDATION_ERROR",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error_code":{
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Rides"
+        ],
+        "summary": "Get all Rides in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Rides"
+            }
+          },
+          "400": {
+            "description": "RIDES_NOT_FOUND_ERROR",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error_code":{
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rides/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of ride that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Rides"
+        ],
+        "summary": "Get ride with given ID",
+        "responses": {
+          "200": {
+            "description": "Ride is found",
+            "schema": {
+              "$ref": "#/definitions/Ride"
+            }
+          },
+          "400": {
+            "description": "RIDES_NOT_FOUND_ERROR",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error_code":{
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Ride": {
+      "required": [
+        "start_lat",
+        "start_long",
+        "end_lat",
+        "end_long",
+        "rider_name",
+        "driver_name",
+        "driver_vehicle"
+      ],
+      "properties": {
+        "start_lat": {
+          "type": "number"
+        },
+        "start_long": {
+          "type": "number"
+        },
+        "end_lat": {
+          "type": "number"
+        },
+        "end_long": {
+          "type": "number"
+        },
+        "rider_name": {
+          "type": "string"
+        },
+        "driver_name": {
+          "type": "string"
+        },
+        "driver_vehicle": {
+          "type": "string"
+        }
+      }
+    },
+    "Rides": {
+      "type":"array",
+      "$ref": "#/definitions/Ride"
+    }
+  }
+}
