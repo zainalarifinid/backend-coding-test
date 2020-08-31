@@ -78,14 +78,14 @@ module.exports = (db) => {
     const result = db.run(
       'INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)',
       values,
-      (err) => {
+      // eslint-disable-next-line func-names
+      function (err) {
         if (err) {
           return res.send({
             error_code: 'SERVER_ERROR',
             message: 'Unknown error',
           });
         }
-
         return db.all(
           'SELECT * FROM Rides WHERE rideID = ?',
           this.lastID,
